@@ -1,14 +1,17 @@
 <template>
   <div id="app">
-    <tree-files/>
+    <tree-files :list="list"/>
   </div>
 </template>
 
 <script>
-import TreeFiles from './components/TreeFiles.vue'
+import TreeFiles from './components/TreeFiles/TreeFiles.vue'
 
 export default {
   name: 'App',
+  data: () => ({
+    list: require('../public/static/node_modules.json')
+  }),
   components: {
     TreeFiles
   }
@@ -21,6 +24,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 38px;
 }
 </style>

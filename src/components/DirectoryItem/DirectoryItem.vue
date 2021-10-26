@@ -10,18 +10,16 @@
       </div>
     </div>
     <div v-if="show">
-      <div v-for="(sec, ind) of section.contents"
-           :key="ind"
-           class="tree-item"
+      <div
+        v-for="(sec, ind) of section.contents"
+        :key="ind"
+        class="tree-item"
       >
         <component
-          :is="sec.type + '-item'"
+          :is="(sec.type === 'link' ? 'file' : sec.type) + '-item'"
           :section="sec"
-          :activeElement.sync="activeElement"
           @activeChange="activeChange"
         />
-<!--        -->
-<!--        v-on="$listeners""-->
       </div>
     </div>
   </div>
@@ -29,16 +27,12 @@
 
 <script>
 import DirectoryItem from './DirectoryItem.vue'
-import DirectoryIcon from './DirectoryIcon.vue'
-import FileItem from './FileItem.vue'
-import LinkItem from './LinkItem.vue'
+import DirectoryIcon from '../Icons/DirectoryIcon.vue'
+import FileItem from '../FileItem/FileItem.vue'
 
 export default {
   name: 'DirectoryItem',
   props: {
-    activeElement: {
-      type: Array
-    },
     section: {
       type: Object
     },
@@ -50,19 +44,15 @@ export default {
     DirectoryItem,
     DirectoryIcon,
     FileItem,
-    LinkItem,
   },
   methods: {
     handlershowDirectory() {
       this.show = !this.show
+      this.$emit('activeChange', [this.section.name])
     },
     activeChange(val) {
-      // console.log('section', this.section)
-      console.log('val', val)
-      let a = val
-      a = a.push(123)
-      this.$emit('activeChange', [a] )
-      // this.$emit('update:activeElement', val)
+      val.push(this.section.name)
+      this.$emit('activeChange', val)
     }
   }
 }
@@ -71,7 +61,6 @@ export default {
 <style scoped>
 .directory {
   background: #e8e8e8;
-
   border-left: 2px solid;
   margin-top: 5px;
 }
